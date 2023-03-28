@@ -1,2 +1,4 @@
 # Tic-Tac-Toe
-Final Project for Data Structures 2023. 
+Interactive Tic Tac Toe game. 
+Uses the Minimax Algorithm to allow users to play against the "computer".
+
