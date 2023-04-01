@@ -1,64 +1,69 @@
 function GetBestMove() {
+    var scores = {
+        X: (BoardSize*BoardSize + 1),
+        O: -(BoardSize*BoardSize + 1),
+        tie: 0
+    };
+
     // AI to make its turn
-    let bestScore = -Infinity;
-    let move;
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        // Is the spot available?
-        if (board[i][j] == '') {
-          board[i][j] = ai;
-          let score = minimax(board, 0, false);
-          board[i][j] = '';
-          if (score > bestScore) {
-            bestScore = score;
-            move = { i, j };
-          }
+    var bestScore = -Infinity;
+    var move;
+    for (var i=0; i<BoardSize; i++) {
+        for (var j=0; j<BoardSize; j++) {
+            // Is the spot available?
+            if (Board[i][j] == '') {
+                Board[i][j] = ai;
+                var score = minimax(scores, 0, false);
+                Board[i][j] = '';
+                if (score > bestScore) {
+                    bestScore = score;
+                    move = { i, j };
+                }
+            }
         }
-      }
     }
-    board[move.i][move.j] = ai;
+    Board[move.i][move.j] = ai;
     currentPlayer = human;
-  }
+}
 
-  let scores = {
-    X: 10,
-    O: -10,
-    tie: 0
-  };
 
-  function minimax(board, depth, isMaximizing) {
-    let result = checkWinner();
+function minimax(scores, depth, isMaximizing) {
+    var result = checkWinner();
+    // console.log(result);
     if (result !== null) {
-      return scores[result];
+        return scores[result];
+    }
+    if (depth >= 10){
+        return scores[result];
     }
 
     if (isMaximizing) {
-      let bestScore = -Infinity;
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          // Is the spot available?
-          if (board[i][j] == '') {
-            board[i][j] = ai;
-            let score = minimax(board, depth + 1, false);
-            board[i][j] = '';
-            bestScore = max(score, bestScore);
-          }
+        var bestScore = -Infinity;
+        for (var i=0; i<BoardSize; i++) {
+            for (var j=0; j<BoardSize; j++) {
+                // Is the spot available?
+                if (Board[i][j] == '') {
+                    Board[i][j] = ai;
+                    var score = minimax(scores, depth + 1, false);
+                    Board[i][j] = '';
+                    bestScore = max(score, bestScore);
+                }
+            }
         }
-      }
-      return bestScore;
+        return bestScore;
     } else {
-      let bestScore = Infinity;
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          // Is the spot available?
-          if (board[i][j] == '') {
-            board[i][j] = human;
-            let score = minimax(board, depth + 1, true);
-            board[i][j] = '';
-            bestScore = min(score, bestScore);
-          }
+        var bestScore = Infinity;
+        for (var i=0; i<BoardSize; i++) {
+            for (var j=0; j<BoardSize; j++) {
+                // Is the spot available?
+                if (Board[i][j] == '') {
+                    Board[i][j] = human;
+                    var score = minimax(scores, depth + 1, true);
+                    Board[i][j] = '';
+                    bestScore = min(score, bestScore);
+                }
+            }
         }
-      }
-      return bestScore;
+        return bestScore;
     }
-  }
+}
