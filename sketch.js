@@ -1,19 +1,17 @@
-
-
+// Initialize an empty game board and set the board size to 3
 var Board = [];
 const BoardSize = 3;
 
+// Initialize variables for AI and human players, and set human as the current player
 var ai = 'X';
 var human = 'O';
 var currentPlayer = human;
 
-
-
-// setup() and draw() required by p5.js
+// Required by p5.js: create a canvas and build the game board
 function setup() {
     createCanvas(400, 400);
 
-    // build Board
+    // Build the game board by filling each cell with an empty string
     for (var i=0; i<BoardSize; i++) {
         Board.push([]);
         for (var j=0; j<BoardSize; j++) {
@@ -21,22 +19,27 @@ function setup() {
         }
     }
 
+    // Call GetBestMove() to make the first move
     GetBestMove();
 }
 
+// Required by p5.js: draw the game board
 function draw() {
     background(255);
     strokeWeight(7);
 
+    // Set variables for the cell width and height
     var w = width / BoardSize;
     var h = height / BoardSize;
 
+    // Draw the horizontal and vertical lines that make up the game board
     for (let i = 1; i < BoardSize; i++) {
         stroke(0);
         line(w * i, 0, w * i, height);
         line(0, h * i, width, h * i);
     }
 
+    // Draw X's and O's for each player's moves
     for (let j = 0; j < BoardSize; j++) {
         for (let i = 0; i < BoardSize; i++) {
             let x = w * i + w / 2;
@@ -45,10 +48,12 @@ function draw() {
             textSize(32);
             let r = w / 4;
             if (spot == human) {
+                // Draw an O for human's move
                 noFill();
                 stroke(255, 64, 32);
                 ellipse(x, y, r * 2);
             } else if (spot == ai) {
+                // Draw an X for AI's move
                 stroke(64, 32, 255);
                 line(x - r, y - r, x + r, y + r);
                 line(x + r, y - r, x - r, y + r);
@@ -56,8 +61,10 @@ function draw() {
         }
     }
 
+    // Check for a winner or tie game
     let result = checkWinner();
     if (result != null) {
+        // Stop the game loop and display the winner or tie game message
         noLoop();
         let resultP = createP('');
         resultP.style('font-size', '32pt');
@@ -70,17 +77,12 @@ function draw() {
     }
 }
 
-
-
-
-
+// Helper function to check if two variables are not equal or either is empty
 function noequal(a, b){
     return a != b || a == '';
 }
 
-
-
-
+// Check for a winner or tie game by iterating through each row, column, and diagonal of the game board
 function checkWinner() {
     var winner = null;
     var res;
