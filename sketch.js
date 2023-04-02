@@ -21,6 +21,7 @@ function setup() {
 
     // Call GetBestMove() to make the first move
     GetBestMove();
+
 }
 
 // Required by p5.js: draw the game board
@@ -66,6 +67,10 @@ function draw() {
     if (result != null) {
         // Stop the game loop and display the winner or tie game message
         noLoop();
+
+        initJSON();
+        flush();
+
         let resultP = createP('');
         resultP.style('font-size', '32pt');
         resultP.style('font-family', 'Arial, Helvetica, sans-serif');
@@ -164,7 +169,8 @@ function mousePressed() {
         if (Board[i][j] == '') {
             Board[i][j] = human;
             currentPlayer = ai;
-            GetBestMove();
+            var t = GetBestMove();
+            insertRow(t);
         }
     }
 }

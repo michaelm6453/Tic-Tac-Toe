@@ -1,6 +1,18 @@
 const MAX_DEPTH = 12;
 
 
+function GetEmptySpaces(){
+    var sp = 0;
+    for (var i=0; i<BoardSize; i++) {
+        for (var j=0; j<BoardSize; j++) {
+            if (Board[i][j] == ''){
+                sp++;
+            }
+        }
+    }
+    return sp;
+}
+
 // This function starts minimax from each empty cell on the board
 // each iteration views the board as if the ai had just played in the currently empty cell
 function GetBestMove() {
@@ -11,6 +23,7 @@ function GetBestMove() {
     };
 
     let start = window.performance.now();
+    var emptySpaces = GetEmptySpaces();
 
     var bestScore = -Number.MIN_VALUE;
     var move;
@@ -39,6 +52,7 @@ function GetBestMove() {
 
     let timeTaken = window.performance.now() - start;
     console.log(timeTaken);
+    return {rowVal: emptySpaces, data: timeTaken};
 }
 
 
